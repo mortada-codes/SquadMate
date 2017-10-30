@@ -9,10 +9,5 @@ const createStoreMiddleware  = applyMiddleware(thunk,logger)(createStore);
 
 
 export default function AppStore(){
-    const store = autoRehydrate()(createStoreMiddleware);
-
-
-
-
-return store;
+ return autoRehydrate()(createStoreMiddleware);
 }

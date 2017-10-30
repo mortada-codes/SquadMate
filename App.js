@@ -1,16 +1,44 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Signin from './src/screens/Signin';
+import {connect,Provider} from 'react-redux';
+import {StackNavigator,addNavigationHelpers,StackNavigatorConfig} from 'react-navigation';
+import {AppStore} from './src/store/AppStore';
+import {createStore} from 'redux';
 
+const AppNavigator = StackNavigator({Signin:{ screen:Signin}});
+const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Signin'));
+const navReducer = (state = initialState, action) => {
+  const nextState = AppNavigator.router.getStateForAction(action, state);
+
+  // Simply return the original `state` if `nextState` is null or undefined.
+  return nextState || state;
+};
+
+
+
+class Root extends React.Component {
+  render() {
+    return (
+      <AppNavigator navigation={addNavigationHelpers({
+        dispatch: this.props.dispatch,
+        state: this.props.nav,
+      })} />
+    );
+  }
+}
+const mapStateToProps = (state) => ({
+  nav: state.nav
+});
+
+const AppWithNavigationState = connect(mapStateToProps)(Root);
+const store = createStore(navReducer);
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-        <Text>Why the hell still working.</Text>
-        <Text>Hello mahmoud...</Text>
-      </View>
+      <Provider store={store}>
+      <AppWithNavigationState />
+    </Provider>
     );
   }
 }
