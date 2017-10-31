@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Signin from './src/screens/Signin';
-import {connect,Provider} from 'react-redux';
+import {Provider,connect} from 'react-redux';
 import {StackNavigator,addNavigationHelpers,StackNavigatorConfig} from 'react-navigation';
 import {AppStore} from './src/store/AppStore';
-import {createStore} from 'redux';
+import {createStore,combineReducers} from 'redux';
+
 
 const AppNavigator = StackNavigator({Signin:{ screen:Signin}});
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Signin'));
@@ -16,6 +17,9 @@ const navReducer = (state = initialState, action) => {
 };
 
 
+const appReducer = combineReducers({
+  nav: navReducer
+});
 
 class Root extends React.Component {
   render() {
@@ -31,8 +35,8 @@ const mapStateToProps = (state) => ({
   nav: state.nav
 });
 
-const AppWithNavigationState = connect(mapStateToProps)(Root);
-const store = createStore(navReducer);
+const AppWithNavigationState =  connect(mapStateToProps)(Root);
+const store = createStore(appReducer);
 export default class App extends React.Component {
   render() {
     return (

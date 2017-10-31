@@ -1,19 +1,19 @@
 import React  from 'react'
-import { Button,TextInput} from 'react-native'
+import { Button,TextInput,Text,View} from 'react-native'
 
 
 export default class Signin extends React.Component {
 
   render() {
           return (
-              <view>
+              <View>
                 <Text >
                     Login to squadmate with password...
                 </Text>
                 <TextInput   />
                 <TextInput />
-                <Button >Login</Button>
-                </view>
+                <Button title="login"/>
+                </View>
           );          
 }
 
