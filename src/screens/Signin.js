@@ -3,7 +3,9 @@ import { Button,TextInput,Text,View} from 'react-native'
 
 
 export default class Signin extends React.Component {
-
+    static navigationOptions = ({ navigation }) => ({
+        
+        title:'Sign in'});
   render() {
           return (
               <View>
@@ -12,7 +14,7 @@ export default class Signin extends React.Component {
                 </Text>
                 <TextInput   />
                 <TextInput />
-                <Button title="login"/>
+                <Button title="login" onPress={()=> null}/>
                 </View>
           );          
 }
