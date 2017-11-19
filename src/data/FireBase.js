@@ -1,8 +1,6 @@
-import firebase from 'firebase'
+import Firebase from 'firebase'
 
 
-export default function Database (){
-    
     const   config = {
         apiKey: "AIzaSyBbSlzikz4s2glP6JePIwpZbP0mQAOpeLc",
         authDomain: "books-map-e775e.firebaseapp.com",
@@ -11,5 +9,7 @@ export default function Database (){
         storageBucket: "books-map-e775e.appspot.com",
         messagingSenderId: "850422296819"
       };
-    return   firebase.initializeApp(config);
-}
+    
+      const firebase =  Firebase.initializeApp(config);
+    
+      export default firebase;

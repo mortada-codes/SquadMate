@@ -1,62 +1,92 @@
-import React from 'react';
-import { StyleSheet, Text, View,Button } from 'react-native';
-import Signin from './src/screens/Signin';
+import React, { Component } from 'react';
 import Home from './src/screens/Home'
 import Profile from './src/screens/Profile'
-import {Provider,connect} from 'react-redux';
-import {StackNavigator,addNavigationHelpers,StackNavigatorConfig} from 'react-navigation';
-import {AppStore} from './src/store/AppStore';
-import {createStore,combineReducers} from 'redux';
+import ChatStack from './src/screens/MatchedScreen';
+import Expo from 'expo';
+import { Icon, Tab, Tabs, Container, Header, TabHeading, Title, Root, Text ,Left,Button,Body} from 'native-base';
+import { StackNavigator } from 'react-navigation';
+import SignUp from './src/screens/Signup';
+import Firebase from './src/data/FireBase';
+
+const isAuthenticated = Firebase.auth().currentUser !== null;
 
 
-const AppNavigator = StackNavigator({ Home:{screen:Home},Signin:{screen:Signin},Profile:{screen:Profile}});
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Home'));
-const navReducer = (state = initialState, action) => {
-  const nextState = AppNavigator.router.getStateForAction(action, state);
-
-  // Simply return the original `state` if `nextState` is null or undefined.
-  return nextState || state;
-};
-
-
-const appReducer = combineReducers({
-  nav: navReducer
-});
-
-class Root extends React.Component {
-
-
-  render() {
-    return (
-      <AppNavigator navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.nav,
-      })} />
-    );
-  }
-}
-const mapStateToProps = (state) => ({
-  nav: state.nav
-});
-
-const AppWithNavigationState =  connect(mapStateToProps)(Root);
-const store = createStore(appReducer);
-export default class App extends React.Component {
+const AppWithTabs = ({ navigation }) => (
+  
+    <Container>
+      <Header hasTabs={true} />
+      <Tabs initialPage={1} locked={true}>
+        <Tab heading={<TabHeading><Icon name="camera" /><Text>Profile</Text></TabHeading>}>
+          <Profile />
+        </Tab>
+        <Tab heading={<TabHeading><Icon name="camera" /><Text>Home</Text></TabHeading>}>
+          <Home />
+        </Tab>
+        <Tab heading={<TabHeading><Icon name="camera" /><Text>Chat</Text></TabHeading>}>
+          <ChatStack />
+        </Tab>
+      </Tabs>
+    </Container>
  
+)
+
+const SignInNavigator = StackNavigator({
+  AppWithTabs: {
+    screen: AppWithTabs,
+    path: '/',
+
+    navigationOptions: ({ navigation }) => ({
+      header: null
+    }),
+  },
+  SignUp: {
+    screen: SignUp,
+    path: '/signup',
+    navigationOptions: ({ navigation }) => ({
+
+      header: (
+        <Header>
+          <Left>
+            <Button transparent onPress={() => navigation.goBack()} ><Icon name='arrow-back' /></Button>
+          </Left>
+          <Body style={{ alignItems: 'center' }} >
+            <Title >Signup</Title>
+          </Body>
+        </Header>
+      )
+
+
+    }),
+  }
+}, {
+    initialRouteName: isAuthenticated ? 'AppWithTabs' : 'SignUp'
+  });
+
+export default class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      isReady: false
+    };
+  }
+
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      'Roboto': require('native-base/Fonts/Roboto.ttf'),
+      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    });
+    this.setState({ isReady: true });
+  }
   render() {
+    if (!this.state.isReady) {
+      return <Expo.AppLoading />;
+    }
+
     return (
-      <Provider store={store}>
-      <AppWithNavigationState />
-    </Provider>
+      <Root>
+      <SignInNavigator />
+      </Root>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
