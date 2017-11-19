@@ -4,7 +4,7 @@ import {
     Header, Body, Title, Left, Right, Button, Icon, Container, Form, Item,
     Content, InputGroup, Input, Text, H1, H3, Grid, Row, Col, List, ListItem, CheckBox
 } from 'native-base'
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator,NavigationActions } from 'react-navigation'
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
 import AutoTags from 'react-native-tag-autocomplete'
 import Expo from 'expo'
@@ -15,6 +15,13 @@ import  signupService  from '../data/SignupService';
 import { Alert } from 'react-native';
 import FadeView from './FadeView';
 
+const resetStack = NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'AppWithTabs' }),
+    ],
+    key: null
+});
 
 alert = (errMessage) => {
     Alert.alert("Fail to create account", errMessage);
@@ -189,7 +196,7 @@ class FinishSignup extends React.Component {
         try {
             const result = await signupService.signup(this.props.navigation.state.params);
             /**@TODO this should be better!!! */
-            this.props.navigation.navigate('AppWithTabs');
+            this.props.navigation.dispatch(resetStack);
         } catch (error) {
             var errorCode = error.code;
             var errorMessage = error.message;

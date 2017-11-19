@@ -2,6 +2,14 @@ import React from 'react';
 import { Container, Content, Form, InputGroup, Input, Item, Button, Text,Icon } from 'native-base';
 import Firebase from '../data/FireBase';
 import { Alert } from 'react-native';
+import {NavigationActions} from 'react-navigation';
+const resetStack = NavigationActions.reset({
+    index: 0,
+    actions: [
+        NavigationActions.navigate({ routeName: 'AppWithTabs' }),
+    ],
+    key: null
+});
 
 export default class Signin extends React.Component {
 
@@ -33,7 +41,7 @@ export default class Signin extends React.Component {
         }).then(() => {
             //this is too bad ugly hack.
             // any suggestions are welcome.
-            this.props.navigation.navigate('AppWithTabs');
+            this.props.navigation.dispatch(resetStack);
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
