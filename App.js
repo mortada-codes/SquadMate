@@ -11,7 +11,7 @@ import Firebase from './src/data/FireBase';
 
 const isAuthenticated = Firebase.auth().currentUser !== null;
 
-console.log(isAuthenticated,Firebase.auth().currentUser);
+
 const AppWithTabs = ({ navigation }) => (
   
     <Container>
