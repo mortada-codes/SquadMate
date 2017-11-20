@@ -10,7 +10,7 @@ class SignupService {
           try{
               console.log(Firebase.auth);
         const auth  =       await Firebase.auth().setPersistence('local').then(()=>{
-            Firebase.auth().createUserWithEmailAndPassword(newUser.email,newUser.password)
+         return   Firebase.auth().createUserWithEmailAndPassword(newUser.email,newUser.password);
         });
         
                 const userId = Firebase.auth().currentUser.uid;
