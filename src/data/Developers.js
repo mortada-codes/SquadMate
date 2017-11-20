@@ -12,7 +12,7 @@ class Developers {
      if(!stackOption){
       return  Promise.resolve([]);
      }
-    return  Firebase.database().ref("profiles").orderByKey().equalTo(stackOption).once("value").then((snapshot) => {
+    return  Firebase.database().ref("developers").child("profiles").orderByKey().startAt(stackOption).endAt(stackOption).once("value").then((snapshot) => {
       var list = [];
       snapshot.forEach((e) => {
         list.push(e.val())

@@ -141,7 +141,7 @@ class DeveloperStackInfo extends React.Component {
             this.state.selected.forEach((v,k,map)=>{if(v)arr.push(k)})
         const {email,password} = this.props.navigation.state.params;
         console.log('selectedItems',arr);
-        this.props.navigation.navigate('Finish', { email,password, checkItems:arr })
+        this.props.navigation.navigate('Finish', { email,password, stackOptions:arr })
     }
     _pressBack = () => {
         this.props.navigation.goBack()
