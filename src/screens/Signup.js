@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Image, TouchableNativeFeedback, StyleSheet, Easing, Animated, FlatList, AsyncStorage } from 'react-native';
 import {
     Header, Body, Title, Left, Right, Button, Icon, Container, Form, Item,
@@ -259,19 +259,41 @@ const SignupNavigator = StackNavigator({
 
 
 
-const NotLoggedIn = ({ navigation }) => (
+class NotLoggedIn extends Component {
+  constructor(props){
+      super(props);
+      this.state={
+          checkingSignIn:false
+      }
+  }
+    componentDidMount(){
+        Firebase.auth().onAuthStateChanged((user) =>{
+            if (user) {
+              this.setState({
+                  checkingSignIn:true
+              });  
+             
+              this.props.navigation.dispatch(resetStack);
+            } else {
+              
+            }
+          });
+    }
+ render(){
+    return  (
     <Container navigation={navigation}>
         <Text></Text>
         <Content padder>
-            <Button style={{ marginVertical: 10 }} primary block onPress={() => navigation.navigate('SignupNavigator')}>
+            <Button style={{ marginVertical: 10 }} primary block onPress={() => this.props.navigation.navigate('SignupNavigator')}>
                 <Text>Signup</Text>
             </Button>
-            <Button primary block onPress={() => navigation.navigate('SignIn')}>
+            <Button primary block onPress={() => this.props.navigation.navigate('SignIn')}>
                 <Text>SignIn</Text>
             </Button>
         </Content>
     </Container>
-)
+)}
+}
 const SignedInNavigator =
     StackNavigator({
 

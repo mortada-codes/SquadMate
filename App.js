@@ -9,7 +9,6 @@ import SignUp from './src/screens/Signup';
 import Firebase from './src/data/FireBase';
 
 
-const isAuthenticated = Firebase.auth().currentUser !== null;
 
 
 const AppWithTabs = ({ navigation }) => (
@@ -51,7 +50,7 @@ const SignInNavigator = StackNavigator({
             <Button transparent onPress={() => navigation.goBack()} ><Icon name='arrow-back' /></Button>
           </Left>
           <Body style={{ alignItems: 'center' }} >
-            <Title >Signup</Title>
+            <Title >Squadmate</Title>
           </Body>
         </Header>
       )
@@ -60,8 +59,10 @@ const SignInNavigator = StackNavigator({
     }),
   }
 }, {
-    initialRouteName: isAuthenticated ? 'AppWithTabs' : 'SignUp'
+   
   });
+
+
 
 export default class App extends Component {
 
@@ -78,6 +79,7 @@ export default class App extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
     this.setState({ isReady: true });
+ 
   }
   render() {
     if (!this.state.isReady) {

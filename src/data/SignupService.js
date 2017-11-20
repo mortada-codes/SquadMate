@@ -14,7 +14,9 @@ class SignupService {
         });
         
                 const userId = Firebase.auth().currentUser.uid;
-         const profile = Firebase.database().ref("developers").child("profiles/"+ userId).push(_.omit(newUser,['email','pasword']));
+                
+                const object  = _.omit(_.omit(newUser,'email'),'pasword');
+         const profile = Firebase.database().ref("developers").child("profiles/"+ userId).set(object);
                   return true;      
         }catch(error){
             console.log(error);
